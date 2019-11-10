@@ -14,7 +14,8 @@ def products_for_category(request, category_slug):
     categories = Category.objects.all()
     chosen_category = get_object_or_404(Category, slug=category_slug)
     products = chosen_category.product_set.all()
-    context = {'all_categories': categories, 'chosen_category': chosen_category, 'products': products}
+    request.session['chosen_category_id'] = chosen_category.id
+    context = {'all_categories': categories, 'chosen_category_id': chosen_category.id, 'products': products}
     return render (request, 'shop/index.html', context)
 
 
@@ -22,5 +23,7 @@ def products_for_category(request, category_slug):
 def product_detail(request, product_slug):
     categories = Category.objects.all()
     chosen_product = get_object_or_404(Product, slug=product_slug)
-    context = {'all_categories': categories, 'product': chosen_product}
+    if request.session['chosen_category']:
+        chosen_category_id = request.session['chosen_category_id']
+    context = {'all_categories': categories, 'chosen_category_id': chosen_category_id, 'product': chosen_product}
     return render(request, 'shop/product_detail.html', context)

@@ -33,7 +33,7 @@ def my_login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('application1:secret_area')
+                return redirect('shop:index')
 
     form = AuthenticationForm()
     return render(request, 'login_system/login.html', {'form': form})

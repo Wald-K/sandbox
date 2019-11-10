@@ -66,7 +66,7 @@
                 <div class="card h-100">
                   <a href="{% url 'shop:product_detail' product_slug=product.slug %}">
 <!--                    <img class="card-img-top" src="http://placehold.it/700x400" alt="">-->
-                    <img class="card-img-top" src="{{product.image.url}}" alt="">
+                    <img class="card-img-top" src="{{product.image.url}}" alt="product.name">
                   </a>
 
                   <div class="card-body">
@@ -82,28 +82,13 @@
                       {% endif %}
                     </p>
                   </div>
+
+                  <!--  rating stars-->
                   <div class="card-footer">
-                    <small class="text-muted">
-
-                    <!--  rating stars-->
-                      {% with ''|center:product.rate as range %}
-                        {% for _ in range %}
-                          &#9733;
-                        {% endfor %}
-                      {% endwith %}
-
-                      {% with 5|sub:product.rate as no_star %}
-                        {% with ''|center:no_star as range %}
-                          {% for _ in range %}
-                            &#9734;
-                          {% endfor %}
-                        {% endwith %}
-                      {% endwith %}
-                    <!--  end rating stars-->
-
-
-                    </small>
+                  {% include "shop/rate_stars.html" %}
+                  <!--  end rating stars-->
                   </div>
+
                 </div>
               </div>
           {% endfor %}

@@ -1,0 +1,21 @@
+ <!--  rating stars-->
+{% load mathfilters %}
+    <small class="text-muted">
+
+
+                          {% with ''|center:product.rate as range %}
+                            {% for _ in range %}
+                              &#9733;
+                            {% endfor %}
+                          {% endwith %}
+
+                          {% with 5|sub:product.rate as no_star %}
+                            {% with ''|center:no_star as range %}
+                              {% for _ in range %}
+                                &#9734;
+                              {% endfor %}
+                            {% endwith %}
+                          {% endwith %}
+
+    </small>
+ <!--  end rating stars-->

@@ -20,4 +20,7 @@ def products_for_category(request, category_slug):
 
 
 def product_detail(request, product_slug):
-    pass
+    categories = Category.objects.all()
+    chosen_product = get_object_or_404(Product, slug=product_slug)
+    context = {'all_categories': categories, 'product': chosen_product}
+    return render(request, 'shop/product_detail.html', context)

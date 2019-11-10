@@ -1,0 +1,11 @@
+<div class="list-group">
+    <a href="{% url 'shop:index' %}" class="list-group-item {% if not chosen_category_id %} active {% endif %}">Wszystkie kategorie</a>
+      {% for category in all_categories %}
+        {% if chosen_category_id == category.id %}
+          <a href="{% url 'shop:products_for_category' category_slug=category.slug %}" class="list-group-item active">{{category.name}}</a>
+        {% else %}
+           <a href="{% url 'shop:products_for_category' category_slug=category.slug %}" class="list-group-item">{{category.name}}</a>
+        {% endif %}
+      {% endfor %}
+
+</div>

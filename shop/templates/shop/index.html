@@ -10,21 +10,7 @@
       <div class="col-lg-3">
 
         <h1 class="my-4">Book shop</h1>
-        <div class="list-group">
-
-
-            <a href="{% url 'shop:index' %}" class="list-group-item {% if not chosen_category %} active {% endif %}">Wszystkie kategorie</a>
-
-
-          {% for category in all_categories %}
-            {% if chosen_category == category %}
-              <a href="{% url 'shop:products_for_category' category_slug=category.slug %}" class="list-group-item active">{{category.name}}</a>
-            {% else %}
-               <a href="{% url 'shop:products_for_category' category_slug=category.slug %}" class="list-group-item">{{category.name}}</a>
-            {% endif %}
-          {% endfor %}
-
-        </div>
+        {% include "shop/category_list.html" %}
 
       </div>
       <!-- /.col-lg-3 -->

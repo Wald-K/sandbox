@@ -39,7 +39,7 @@
             {% else %}
               {% for comment in product.comment_set.all %}
                 <p> {{comment.content}}</p>
-                <small class="text-muted">Wysłane przez: Anonymous - {{comment.created_at}}</small>
+                <small class="text-muted">Wysłane przez: {{comment.author}} - {{comment.created_at}}</small>
                 <hr>
               {% endfor %}
             {% endif %}

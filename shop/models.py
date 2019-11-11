@@ -4,6 +4,7 @@ import uuid
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 
 
 # addional functions
@@ -71,6 +72,7 @@ class Product(models.Model):
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

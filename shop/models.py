@@ -42,7 +42,6 @@ class Category(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        # self.slug = slugify(self.name)
         self.slug = get_unique_slug(self)
         super(Category, self).save(*args, **kwargs)
 
@@ -70,4 +69,11 @@ class Product(models.Model):
         super(Product, self).save(*args, **kwargs)
 
 
+class Comment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content
 

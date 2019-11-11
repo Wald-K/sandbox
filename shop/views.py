@@ -39,7 +39,6 @@ def product_add_comment(request, product_slug):
             f = form.save(commit=False)
             f.author = request.user
             f.product = get_object_or_404(Product, slug=product_slug)
-
             f.save()
             return redirect('shop:product_detail', product_slug=product_slug)
     else:

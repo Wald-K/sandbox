@@ -44,7 +44,11 @@
               {% endfor %}
             {% endif %}
 
-            <a href="#" class="btn btn-outline-primary">Dodaj opinię</a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'shop:product_add_comment' product_slug=product.slug %}" class="btn btn-outline-primary">Dodaj opinię</a>
+            {% endif %}
+
+
           </div>
         </div>
         <!-- /.card -->

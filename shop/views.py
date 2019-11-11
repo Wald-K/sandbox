@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
+from .forms import CommentForm
+from django.shortcuts import redirect
 
 
 def index(request):
@@ -27,3 +29,19 @@ def product_detail(request, product_slug):
         chosen_category_id = None
     context = {'all_categories': categories, 'chosen_category_id': chosen_category_id, 'product': chosen_product}
     return render(request, 'shop/product_detail.html', context)
+
+
+def product_add_comment(request, product_slug):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.author = request.user
+            f.product = get_object_or_404(Product, slug=product_slug)
+
+            f.save()
+            return redirect('shop:product_detail', product_slug=product_slug)
+    else:
+        form = CommentForm()
+    return render(request, 'shop/add_comment.html', {'form': form})

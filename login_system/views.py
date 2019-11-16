@@ -41,4 +41,4 @@ def my_login(request):
 
 def my_logout(request):
     logout(request)
-    return redirect('login_system:login')
+    return redirect('shop:index')

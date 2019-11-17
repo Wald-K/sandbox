@@ -17,7 +17,7 @@ def register(request):
             user.set_password(password)
             user.save()
 
-            return redirect('login_system:register')
+            return redirect('shop:index')
 
     else:
         form = UserCreationForm()

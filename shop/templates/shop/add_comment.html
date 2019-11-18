@@ -11,6 +11,7 @@
                 <label for="{{form.content.id_for_label}}">{{form.content.label}}</label>
                 {{ form.content|add_class:'form-control'|attr:"rows:10" }}
             </div>
+            {{form.rating}}
             <button type="submit" class="btn btn-primary">Wyślij komentarz</button>
         </form>
         </div>

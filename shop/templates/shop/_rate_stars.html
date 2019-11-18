@@ -3,13 +3,13 @@
     <small class="text-muted">
 
 
-                          {% with ''|center:product.rate as range %}
+                          {% with ''|center:product.get_rate_round_to_int as range %}
                             {% for _ in range %}
                               &#9733;
                             {% endfor %}
                           {% endwith %}
 
-                          {% with 5|sub:product.rate as no_star %}
+                          {% with 5|sub:product.get_rate_round_to_int as no_star %}
                             {% with ''|center:no_star as range %}
                               {% for _ in range %}
                                 &#9734;

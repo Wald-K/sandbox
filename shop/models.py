@@ -52,15 +52,14 @@ class Product(models.Model):
     slug = models.SlugField(max_length=100, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to=get_file_path)
-    rate = models.SmallIntegerField(default=0,
-                                    validators=[
-                                        MaxValueValidator(5),
-                                        MinValueValidator(0)
-                                    ])
+    rate = models.FloatField(default=0)
     description = models.TextField(blank=True, null=True)
     categories = models.ManyToManyField(Category, blank=True)
 
     directory_string_var = 'images'
+
+    def get_rate_round_to_int(self):
+        return round(self.rate)
 
     def __str__(self):
         return self.name
@@ -69,11 +68,21 @@ class Product(models.Model):
         self.slug = get_unique_slug(self)
         super(Product, self).save(*args, **kwargs)
 
+    def save_without_new_slug(self, *args, **kwargs):
+        super(Product, self).save(*args, **kwargs)
+
+    def update_product_rating(self, comment_rate):
+        comments_count = self.comment_set.count()
+        new_rate = (comment_rate + comments_count*self.rate) / (comments_count + 1)
+        self.rate = new_rate
+        self.save_without_new_slug()
+
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.TextField(verbose_name = "Twoja opinia")
+    rating = models.SmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

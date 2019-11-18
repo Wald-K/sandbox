@@ -38,8 +38,12 @@ def product_add_comment(request, product_slug):
         if form.is_valid():
             f = form.save(commit=False)
             f.author = request.user
-            f.product = get_object_or_404(Product, slug=product_slug)
+            product = get_object_or_404(Product, slug=product_slug)
+            f.product = product
+            product.update_product_rating(f.rating)
+
             f.save()
+
             return redirect('shop:product_detail', product_slug=product_slug)
     else:
         form = CommentForm()

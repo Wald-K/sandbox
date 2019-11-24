@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
 from .forms import CommentForm
 from django.shortcuts import redirect
+from django.views.generic.list import ListView
 
 
 def index(request):
@@ -48,3 +49,8 @@ def product_add_comment(request, product_slug):
     else:
         form = CommentForm()
     return render(request, 'shop/add_comment.html', {'form': form})
+
+class CategoriesListView(ListView):
+    model = Category
+    query_set = Category.objects.all()
+

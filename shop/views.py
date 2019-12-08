@@ -3,8 +3,9 @@ from .models import Category, Product
 from .forms import CommentForm
 from django.shortcuts import redirect
 from django.views.generic.list import ListView
-from django.views.generic import CreateView, UpdateView
-from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.db.models.functions import Lower
 from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -53,9 +54,12 @@ def product_add_comment(request, product_slug):
         form = CommentForm()
     return render(request, 'shop/add_comment.html', {'form': form})
 
+
 class CategoriesListView(ListView):
     model = Category
     query_set = Category.objects.all()
+    ordering = [Lower('name')]
+
 
 class CategoryCreate(SuccessMessageMixin, CreateView):
     model = Category
@@ -63,7 +67,7 @@ class CategoryCreate(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('shop:staff_show_categories')
 
     def get_success_message(self, cleaned_data):
-        return f"Kategoria {cleaned_data['name']} została utworzona"
+        return f"Kategoria '{cleaned_data['name']}' została utworzona"
 
 
 class CategoryUpdate(SuccessMessageMixin, UpdateView):
@@ -72,9 +76,9 @@ class CategoryUpdate(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('shop:staff_show_categories')
 
     def get_success_message(self, cleaned_data):
-        return f"Kategoria {cleaned_data['name']} została zaktualizowana"
+        return f"Kategoria '{cleaned_data['name']}' została zaktualizowana"
 
 
-
-
-
+class CategoryDelete(DeleteView):
+    model = Category
+    success_url = reverse_lazy('shop:staff_show_categories')

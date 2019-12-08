@@ -3,7 +3,6 @@ import os
 import uuid
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 
 
@@ -32,9 +31,9 @@ def get_unique_slug(instance, new_slug=None):
 
 # Models
 class Category(models.Model):
-    name = models.CharField(max_length=60, verbose_name = "Nazwa kategorii")
+    name = models.CharField(max_length=60, verbose_name="Nazwa kategorii")
     slug = models.SlugField(max_length=60, blank=True)
-    description = models.TextField(blank=True, null=True, verbose_name = "Opis")
+    description = models.TextField(blank=True, null=True, verbose_name="Opis")
 
     class Meta:
         verbose_name_plural = "categories"
@@ -88,10 +87,9 @@ class Product(models.Model):
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(verbose_name = "Twoja opinia")
+    content = models.TextField(verbose_name="Twoja opinia")
     rating = models.SmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.content
-

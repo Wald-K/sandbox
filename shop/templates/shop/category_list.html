@@ -43,7 +43,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="#" class="btn btn-primary">Edytuj</a>
+                    <a href="{% url 'shop:staff_update_category' slug=category.slug %}" class="btn btn-primary">Edytuj</a>
                     <a href="#" class="btn btn-secondary">Usuń</a>
                 </td>
               </tr>

@@ -3,6 +3,9 @@ from .models import Category, Product
 from .forms import CommentForm
 from django.shortcuts import redirect
 from django.views.generic.list import ListView
+from django.views.generic import CreateView
+from django.urls import reverse_lazy, reverse
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 def index(request):
@@ -53,4 +56,13 @@ def product_add_comment(request, product_slug):
 class CategoriesListView(ListView):
     model = Category
     query_set = Category.objects.all()
+
+class CategoryCreate(SuccessMessageMixin, CreateView):
+    model = Category
+    fields = ['name', 'description']
+    success_url = reverse_lazy('shop:staff_show_categories')
+
+    def get_success_message(self, cleaned_data):
+        return f"Kategoria {cleaned_data['name']} została utworzona"
+
 

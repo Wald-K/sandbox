@@ -2,10 +2,25 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% block content %}
+
 <div class="container">
     <div class="row">
+        {% if messages %}
+            <div class="alert alert-warning">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+
+    <div class="row">
          <div class="col-lg-12">
-            <p class="h1">Kategorie</p>
+             <p class="h1">Kategorie</p>
+             <p>
+                 <a href="{% url 'shop:staff_new_category' %}" class="btn btn-primary">Nowa kategoria</a>
+             </p>
          </div>
 
         <div class="col-lg-12">
@@ -19,12 +34,12 @@
               </tr>
             </thead>
             <tbody>
-            {% for product in object_list %}
+            {% for category in object_list %}
               <tr>
-                <td>{{product.name}}</td>
+                <td>{{category.name}}</td>
                 <td>
-                    {% if product.description %}
-                        {{ product.description|slice:":50"}}{% if product.description|length > 50 %}...{% endif %}
+                    {% if category.description %}
+                        {{ category.description|slice:":50"}}{% if category.description|length > 50 %}...{% endif %}
                     {% endif %}
                 </td>
                 <td>

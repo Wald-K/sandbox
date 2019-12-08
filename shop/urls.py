@@ -10,6 +10,7 @@ urlpatterns = [
     path('products/<slug:product_slug>/', views.product_detail, name='product_detail'),
     path('products/<slug:product_slug>/add-comment', views.product_add_comment, name='product_add_comment'),
     path('staff/categories/', views.CategoriesListView.as_view(), name='staff_show_categories'),
+    path('staff/categories/new', views.CategoryCreate.as_view(), name='staff_new_category'),
 
 ]
 

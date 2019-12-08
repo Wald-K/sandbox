@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Category
 from django_starfield import Stars
 
 class CommentForm(forms.ModelForm):
@@ -9,3 +9,9 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'rating': Stars
         }
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'description']

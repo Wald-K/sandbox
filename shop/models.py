@@ -32,9 +32,9 @@ def get_unique_slug(instance, new_slug=None):
 
 # Models
 class Category(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, verbose_name = "Nazwa kategorii")
     slug = models.SlugField(max_length=60, blank=True)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True, verbose_name = "Opis")
 
     class Meta:
         verbose_name_plural = "categories"

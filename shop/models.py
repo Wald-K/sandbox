@@ -32,7 +32,7 @@ def get_unique_slug(instance, new_slug=None):
 # Models
 class Category(models.Model):
     name = models.CharField(max_length=60, verbose_name="Nazwa kategorii")
-    slug = models.SlugField(max_length=60, blank=True)
+    slug = models.SlugField(max_length=60, unique=True)
     description = models.TextField(blank=True, null=True, verbose_name="Opis")
 
     class Meta:
@@ -42,7 +42,11 @@ class Category(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = get_unique_slug(self)
+        if self.pk is None:  # Create category
+            self.slug = get_unique_slug(self)
+        else:  # Update category
+            if Category.objects.get(pk=self.pk).name != self.name:  # category name change so slug change
+                self.slug = get_unique_slug(self)
         super(Category, self).save(*args, **kwargs)
 
 

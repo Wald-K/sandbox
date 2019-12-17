@@ -32,7 +32,7 @@ def get_unique_slug(instance, new_slug=None):
 # Models
 class Category(models.Model):
     name = models.CharField(max_length=60, verbose_name="Nazwa kategorii")
-    slug = models.SlugField(max_length=60, unique=True)
+    slug = models.SlugField(max_length=60, unique=True, null=True)
     description = models.TextField(blank=True, null=True, verbose_name="Opis")
 
     class Meta:
@@ -52,7 +52,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, blank=True)
+    slug = models.SlugField(max_length=100, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to=get_file_path)
     rate = models.FloatField(null=True, blank=True)

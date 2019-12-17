@@ -7,6 +7,8 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models.functions import Lower
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -36,6 +38,7 @@ def product_detail(request, product_slug):
     return render(request, 'shop/product_detail.html', context)
 
 
+@login_required
 def product_add_comment(request, product_slug):
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -55,13 +58,17 @@ def product_add_comment(request, product_slug):
     return render(request, 'shop/add_comment.html', {'form': form})
 
 
-class CategoriesListView(ListView):
+class CategoriesListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Category
     query_set = Category.objects.all()
     ordering = [Lower('name')]
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class CategoryCreate(SuccessMessageMixin, CreateView):
+
+
+class CategoryCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
     model = Category
     fields = ['name', 'description']
     success_url = reverse_lazy('shop:staff_show_categories')
@@ -69,8 +76,11 @@ class CategoryCreate(SuccessMessageMixin, CreateView):
     def get_success_message(self, cleaned_data):
         return f"Kategoria '{cleaned_data['name']}' została utworzona"
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class CategoryUpdate(SuccessMessageMixin, UpdateView):
+
+class CategoryUpdate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = Category
     fields = ['name', 'description']
     success_url = reverse_lazy('shop:staff_show_categories')
@@ -78,7 +88,13 @@ class CategoryUpdate(SuccessMessageMixin, UpdateView):
     def get_success_message(self, cleaned_data):
         return f"Kategoria '{cleaned_data['name']}' została zaktualizowana"
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class CategoryDelete(DeleteView):
+
+class CategoryDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Category
     success_url = reverse_lazy('shop:staff_show_categories')
+
+    def test_func(self):
+        return self.request.user.is_staff

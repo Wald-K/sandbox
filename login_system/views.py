@@ -6,6 +6,18 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
+def get_success_url(request):
+    """
+    Funkcja wykorzystywana do redirect.
+    Po zalogowaniu akcja wraca do widoku, który był wcześniej realizowany
+    """
+    next_url = request.GET.get('next', None)
+    if next_url:
+        return "%s" % next_url  # you can include some query strings as well
+    else:
+        return reverse('shop:index')  # what url you wish to return
+
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -24,6 +36,7 @@ def register(request):
     context = {'form': form}
     return render(request, 'login_system/register.html', context)
 
+
 def my_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
@@ -33,7 +46,7 @@ def my_login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('shop:index')
+                return redirect(get_success_url(request))
 
     form = AuthenticationForm()
     return render(request, 'login_system/login.html', {'form': form})

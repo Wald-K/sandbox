@@ -47,9 +47,9 @@
             {% if user.is_authenticated %}
               <a href="{% url 'shop:product_add_comment' product_slug=product.slug %}" class="btn btn-outline-primary">Dodaj opinię</a>
             {% else %}
-              <a class="btn btn-outline-primary" href="{% url 'login_system:login'%}">Zaloguj się, aby skomentować </a>
+              <!-- next paremeter directs after logging to product detail view but with possibility adding comment-->
+              <a class="btn btn-outline-primary" href="{% url 'login_system:login' %}?next={% url 'shop:product_detail' product_slug=product.slug %}">Zaloguj się, aby skomentować </a>
             {% endif %}
-
 
           </div>
         </div>

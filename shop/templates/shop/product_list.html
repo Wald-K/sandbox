@@ -1,0 +1,62 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% if messages %}
+            <div class="alert alert-warning">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+
+    <div class="row">
+         <div class="col-lg-12">
+             <p class="h1">Książki</p>
+             <p>
+                 <a href="{% url 'shop:staff_new_category' %}" class="btn btn-primary">Nowa kategoria</a>
+             </p>
+         </div>
+
+        <div class="col-lg-12">
+
+            <table class="table table-hover">
+            <thead>
+              <tr>
+                  <th>Tytuł</th>
+                  <th>Cena</th>
+                  <th>Ocena</th>
+                  <th>Opis</th>
+                  <th>Operacje</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for product in object_list %}
+              <tr>
+                  <td>{{product.name}}</td>
+                  <td>{{product.price}}</td>
+                  <td>{{product.rate | floatformat:2}}</td>
+                  <td>
+                    {% if product.description %}
+                        {{ product.description|slice:":50"}}{% if product.description|length > 50 %}...{% endif %}
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="" class="btn btn-primary">Edytuj</a>
+                    <a href="" class="btn btn-secondary">Usuń</a>
+                  </td>
+              </tr>
+
+             {% endfor %}
+            </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

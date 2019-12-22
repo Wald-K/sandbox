@@ -98,3 +98,12 @@ class CategoryDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user.is_staff
+
+
+class ProductsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Product
+    query_set = Product.objects.all()
+    ordering = [Lower('name')]
+
+    def test_func(self):
+        return self.request.user.is_staff

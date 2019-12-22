@@ -51,13 +51,13 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name="Tytuł")
     slug = models.SlugField(max_length=100, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to=get_file_path)
     rate = models.FloatField(null=True, blank=True)
     description = models.TextField(blank=True, null=True)
-    categories = models.ManyToManyField(Category, blank=True)
+    categories = models.ManyToManyField(Category, blank=True, null=True)
 
     directory_string_var = 'images'
 

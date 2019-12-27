@@ -67,7 +67,6 @@ class CategoriesListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return self.request.user.is_staff
 
 
-
 class CategoryCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
     model = Category
     fields = ['name', 'description']
@@ -104,6 +103,18 @@ class ProductsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Product
     query_set = Product.objects.all()
     ordering = [Lower('name')]
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class ProductCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    model = Product
+    fields = ['name', 'price', 'image', 'description', 'categories']
+    success_url = reverse_lazy('shop:staff_show_products')
+
+    def get_success_message(self, cleaned_data):
+        return f"Produkt '{cleaned_data['name']}' został utworzony"
 
     def test_func(self):
         return self.request.user.is_staff

@@ -118,3 +118,10 @@ class ProductCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin
 
     def test_func(self):
         return self.request.user.is_staff
+
+class ProductDetete(LoginRequiredMixin, UserPassesTestMixin ,DeleteView):
+    model = Product
+    success_url = reverse_lazy('shop:staff_show_products')
+
+    def test_func(self):
+        return self.request.user.is_staff

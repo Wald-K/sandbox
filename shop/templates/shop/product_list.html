@@ -47,7 +47,7 @@
                   </td>
                   <td>
                     <a href="" class="btn btn-primary">Edytuj</a>
-                    <a href="" class="btn btn-secondary">Usuń</a>
+                    <a href="{% url 'shop:staff_delete_product' slug=product.slug %}" class="btn btn-secondary">Usuń</a>
                   </td>
               </tr>
 

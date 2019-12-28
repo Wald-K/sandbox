@@ -55,7 +55,6 @@ class Product(models.Model):
     slug = models.SlugField(max_length=100, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Cena")
     image = models.ImageField(upload_to=get_file_path, verbose_name="Zdjęcie")
-    # image = models.ImageField(upload_to='images/', verbose_name="Zdjęcie")
     rate = models.FloatField(null=True, blank=True)
     description = models.TextField(blank=True, null=True, verbose_name="Opis")
     categories = models.ManyToManyField(Category, blank=True, verbose_name="Kategorie")
@@ -72,7 +71,11 @@ class Product(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = get_unique_slug(self)
+        if self.pk is None:  # Create Product
+            self.slug = get_unique_slug(self)
+        else:  # Update Product
+            if Product.objects.get(pk=self.pk).name != self.name:  # Product name change so slug change
+                self.slug = get_unique_slug(self)
         super(Product, self).save(*args, **kwargs)
 
     def save_without_new_slug(self, *args, **kwargs):

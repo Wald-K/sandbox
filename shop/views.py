@@ -119,9 +119,22 @@ class ProductCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin
     def test_func(self):
         return self.request.user.is_staff
 
-class ProductDetete(LoginRequiredMixin, UserPassesTestMixin ,DeleteView):
+
+class ProductDetete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('shop:staff_show_products')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class ProductUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Product
+    fields = ['name', 'price', 'image', 'description', 'categories']
+    success_url = reverse_lazy('shop:staff_show_products')
+
+    def get_success_message(self, cleaned_data):
+        return f"Książka '{cleaned_data['name']}' została zaktualizowana"
 
     def test_func(self):
         return self.request.user.is_staff

@@ -28,6 +28,7 @@
             <thead>
               <tr>
                   <th>Tytuł</th>
+                  <th>Kategorie</th>
                   <th>Cena</th>
                   <th>Ocena</th>
                   <th>Opis</th>
@@ -38,6 +39,13 @@
             {% for product in object_list %}
               <tr>
                   <td>{{product.name}}</td>
+                  <td>
+                      {% for category in product.categories.all %}
+                      <ul>
+                          <li> {{category.name}} </li>
+                      </ul>
+                      {% endfor %}
+                  </td>
                   <td>{{product.price}}</td>
                   <td>{{product.rate | floatformat:2}}</td>
                   <td>

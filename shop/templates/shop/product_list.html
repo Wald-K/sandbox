@@ -38,7 +38,11 @@
             <tbody>
             {% for product in object_list %}
               <tr>
-                  <td>{{product.name}}</td>
+                  <td>
+                      <a href="{% url 'shop:product_detail' product_slug=product.slug %}">{{product.name}}</a>
+
+
+                  </td>
                   <td>
                       {% for category in product.categories.all %}
                       <ul>

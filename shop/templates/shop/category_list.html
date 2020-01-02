@@ -28,9 +28,10 @@
             <table class="table table-hover">
             <thead>
               <tr>
-                <th>Nazwa</th>
-                <th>Opis</th>
-                <th>Operacje</th>
+                  <th>Nazwa</th>
+                  <th>Opis</th>
+                  <th>Ilość produktów</th>
+                  <th>Operacje</th>
               </tr>
             </thead>
             <tbody>
@@ -42,6 +43,17 @@
                         {{ category.description|slice:":50"}}{% if category.description|length > 50 %}...{% endif %}
                     {% endif %}
                 </td>
+                  <td>
+                      <a href="{% url 'shop:products_for_category' category_slug=category.slug %}">
+                                Produkty
+                                    {% if category.product_set.count > 0 %}
+                                        <span class="badge badge-warning">{{category.product_set.count}}</span>
+                                    {% else %}
+                                        <span class="badge badge-secondary">{{category.product_set.count}}</span>
+                                    {% endif %}
+                               </a>
+
+                  </td>
                 <td>
                     <a href="{% url 'shop:staff_update_category' slug=category.slug %}" class="btn btn-primary">Edytuj</a>
                     <a href="{% url 'shop:staff_delete_category' slug=category.slug %}" class="btn btn-secondary">Usuń</a>

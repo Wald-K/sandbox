@@ -9,6 +9,7 @@ from django.db.models.functions import Lower
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 def index(request):
@@ -23,7 +24,8 @@ def products_for_category(request, category_slug):
     chosen_category = get_object_or_404(Category, slug=category_slug)
     products = chosen_category.product_set.all()
     request.session['chosen_category_id'] = chosen_category.id
-    context = {'all_categories': categories, 'chosen_category_id': chosen_category.id, 'products': products}
+    context = {'all_categories': categories,
+               'chosen_category_id': chosen_category.id, 'products': products}
     return render(request, 'shop/index.html', context)
 
 
@@ -34,7 +36,8 @@ def product_detail(request, product_slug):
         chosen_category_id = request.session['chosen_category_id']
     else:
         chosen_category_id = None
-    context = {'all_categories': categories, 'chosen_category_id': chosen_category_id, 'product': chosen_product}
+    context = {'all_categories': categories,
+               'chosen_category_id': chosen_category_id, 'product': chosen_product}
     return render(request, 'shop/product_detail.html', context)
 
 
@@ -60,8 +63,15 @@ def product_add_comment(request, product_slug):
 
 class CategoriesListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Category
-    query_set = Category.objects.all()
-    ordering = [Lower('name')]
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', None)
+        if query == None:
+            queryset = Category.objects.all()
+        else:
+            queryset = Category.objects.filter(
+                Q(name__icontains=query) | (Q(description__contains=query)))
+        return queryset.order_by(Lower('name'))
 
     def test_func(self):
         return self.request.user.is_staff

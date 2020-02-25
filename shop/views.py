@@ -63,7 +63,7 @@ def product_add_comment(request, product_slug):
 
 class CategoriesListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Category
-    paginate_by = 5
+    paginate_by = 1
 
     def get_queryset(self):
         query = self.request.GET.get('q', None)

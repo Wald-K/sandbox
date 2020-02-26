@@ -13,14 +13,21 @@
         {% endif %}
     </div>
 
-
     <div class="row">
-         <div class="col-lg-12">
+         <div class="col-lg-6">
              <p class="h1">Książki</p>
              <p>
                  <a href="{% url 'shop:staff_new_product' %}" class="btn btn-primary">Nowa książka</a>
              </p>
          </div>
+         <div class="col-lg-6">
+            <form method="GET">
+                <input type="text" name="q" placeholder="Search"/>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">     
 
         <div class="col-lg-12">
 
@@ -69,6 +76,13 @@
 
         </div>
     </div>
+
+
+    {% if is_paginated %}
+        {% include "shop/_pagination_foot.html" %}
+    {% endif %}
+
+
 </div>
 
 {% endblock %}

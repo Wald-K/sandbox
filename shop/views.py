@@ -112,8 +112,17 @@ class CategoryDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class ProductsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Product
-    query_set = Product.objects.all()
-    ordering = [Lower('name')]
+    paginate_by = 5
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', None)
+        if query == None:
+            queryset = Product.objects.all()
+        else:
+            queryset = Product.objects.filter(
+                Q(name__icontains=query) | (Q(description__contains=query)))
+        return queryset.order_by(Lower('name'))
+
 
     def test_func(self):
         return self.request.user.is_staff

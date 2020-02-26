@@ -2,6 +2,7 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% load mathfilters %}
+{% load my_tags %}
 {% block content %}
 
 
@@ -82,10 +83,10 @@
     <div class="row">
         <nav aria-label="Page navigation example"></nav>
         <ul class="pagination">
-            {# symbol strzałki w lewo - poprzednia strona #}
+            {# symbol arrow in left - previous page #}
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?{% param_replace page=page_obj.previous_page_number %}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span class="sr-only">Previous</span>
                     </a>
@@ -93,30 +94,31 @@
             {% endif %}
 
 
-            {# trzy kropki #}
+            {# 3 dots #}
             {% if page_obj.number|add:'-4' > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.number|add:'-5' }}" aria-label="Previous">
+                    <a class="page-link" href="?{% param_replace page=page_obj.number|add:'-5' %}" aria-label="Previous">
                         <span aria-hidden="true">&hellip;</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
             {% endif %}
 
-            {# numery 9 stron, 4 w lewo od bieżącej i 4 w prawo #}
+            {# numbers of 9 pages, 4 in left from current and 4 in right #}
             {% for i in page_obj.paginator.page_range %}
                 {% if page_obj.number == i %}
-                    <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                    <li class="page-item active"><a class="page-link" href="?{% param_replace page=i %}">{{i}}</a></li>
                 {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
-                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                    <!-- <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li> -->
+                    <li class="page-item"><a class="page-link" href="?{% param_replace page=i %}">{{i}}</a></li>
                 {% endif %}
             {% endfor %}
 
 
-            {# trzy kropki #}
+            {# 3 dots #}
             {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.number|add:'5' }}" aria-label="Previous">
+                    <a class="page-link" href="?{% param_replace page=page_obj.number|add:'5' %}" aria-label="Previous">
                         <span aria-hidden="true">&hellip;</span>
                         <span class="sr-only">Previous</span>
                     </a>
@@ -124,18 +126,16 @@
             {% endif %}
 
 
-            {# symbol strzałki w prawo - następna strona #}
+            {# symbol arrow on right - next page #}
             {% if page_obj.has_next %}
                 <li class="page-item">
-                     <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                     {# custom tag param_replace makes possible search q and pagination #}
+                     <a class="page-link" href="?{% param_replace page=page_obj.next_page_number %}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                       </a>
                 </li>
             {% endif %}
-
-
-
 
         </ul>
         </nav>

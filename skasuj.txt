@@ -1,0 +1,26 @@
+import pandas as pd
+
+
+data = pd.read_csv("data.csv", on_bad_lines="skip")
+
+df_records = data.to_dict('records')
+
+
+print(data.columns)
+
+model_instances = [Book(
+    title=record['title'],
+    authors=record['authors'],
+    average_rating=record['average_rating'],
+    isbn=record['isbn'],
+    isbn13=record['isbn13'],
+    language_code=record['language_code'],
+    num_pages=record['num_pages'],
+    ratings_count=record['ratings_count'],
+    text_reviews_count=record['text_reviews_count'],
+    publication_date=record['publication_date'],
+    publisher=record['publisher']
+) for record in df_records]
+
+
+Book.objects.bulk_create(model_instances)

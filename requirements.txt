@@ -4,4 +4,4 @@ django-mathfilters==0.4.0
 django-starfield==1.0.post1
 django-widget-tweaks==1.4.5
 gunicorn==20.0.4
-Pillow==6.2.0
+Pillow==10.0.1
